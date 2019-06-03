@@ -20,6 +20,7 @@ from homeassistant.const import (
     SERVICE_VOLUME_MUTE,
     SERVICE_MEDIA_PLAY,
     SERVICE_MEDIA_PAUSE,
+    STATE_PLAYING,
     STATE_OFF,
 )
 from homeassistant.core import DOMAIN as HA_DOMAIN
@@ -128,7 +129,7 @@ class OnOffCapability(_Capability):
         if self.state.domain == cover.DOMAIN:
             return self.state.state != cover.STATE_OPEN
         elif self.state.domain == media_player.DOMAIN:
-            return self.state.state == media_player.MEDIA_STATE_PLAYING
+            return self.state.state == STATE_PLAYING
         else:
             return self.state.state != STATE_OFF
 
