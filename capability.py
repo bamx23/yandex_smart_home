@@ -18,6 +18,8 @@ from homeassistant.const import (
     SERVICE_TURN_OFF,
     SERVICE_TURN_ON,
     SERVICE_VOLUME_MUTE,
+    SERVICE_MEDIA_PLAY,
+    SERVICE_MEDIA_PAUSE,
     STATE_OFF,
 )
 from homeassistant.core import DOMAIN as HA_DOMAIN
@@ -125,6 +127,8 @@ class OnOffCapability(_Capability):
         """Return the state value of this capability for this entity."""
         if self.state.domain == cover.DOMAIN:
             return self.state.state != cover.STATE_OPEN
+        elif self.state.domain == media_player.DOMAIN:
+            return self.state.state == media_player.MEDIA_STATE_PLAYING
         else:
             return self.state.state != STATE_OFF
 
@@ -142,6 +146,10 @@ class OnOffCapability(_Capability):
             service_domain = domain
             service = SERVICE_CLOSE_COVER if state['value'] else \
                 SERVICE_OPEN_COVER
+        elif domain == media_player.DOMAIN:
+            service_domain = domain
+            service = SERVICE_MEDIA_PLAY if state['value'] else \
+                SERVICE_MEDIA_PAUSE
         else:
             service_domain = domain
             service = SERVICE_TURN_ON if state['value'] else SERVICE_TURN_OFF
